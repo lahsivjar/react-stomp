@@ -1,7 +1,7 @@
-import React from 'react';
-import SockJS from 'sockjs-client';
-import Stomp from 'stompjs';
-import PropTypes from 'prop-types';
+import React from "react";
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
+import PropTypes from "prop-types";
 
 class SockJsClient extends React.Component {
 
@@ -25,7 +25,7 @@ class SockJsClient extends React.Component {
 
     this.state = {
       connected: false
-    }
+    };
   }
 
   componentDidMount() {
@@ -67,7 +67,7 @@ class SockJsClient extends React.Component {
   // Will be accessed by ref attribute from the parent component
   sendMessage = (topic, msg) => {
     if (!this.subscriptions.has(topic)) {
-      throw 'Not subscribed to the given topic';
+      throw "Not subscribed to the given topic";
     } else {
       this.client.send(topic, {}, msg);
     }
