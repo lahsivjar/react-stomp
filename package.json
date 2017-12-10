@@ -1,9 +1,10 @@
 {
-  "name": "react-ws",
+  "name": "react-stomp",
   "version": "1.0.0",
   "description": "React websocket component with STOMP over SockJS",
   "main": "./dist/client.js",
   "scripts": {
+    "prepublish": "npm run build",
     "lint": "eslint src/* test/*",
     "lint-fix": "eslint src/* test/* --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
