@@ -1,11 +1,11 @@
 {
   "name": "react-ws",
   "version": "1.0.0",
-  "description": "React websocket component with sockjs support",
+  "description": "React websocket component with STOMP over SockJS",
   "main": "./dist/client.js",
   "scripts": {
-    "lint": "eslint ./src/*",
-    "lint-fix": "eslint ./src/* --fix",
+    "lint": "eslint src/* test/*",
+    "lint-fix": "eslint src/* test/* --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel src --out-dir dist"
   },

@@ -1,1 +1,4 @@
 src
+test
+.babelrc
+.eslintrc
