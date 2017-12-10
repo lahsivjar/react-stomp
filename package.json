@@ -16,7 +16,8 @@
   "keywords": [
     "react",
     "websocket",
-    "sockjs"
+    "sockjs",
+    "stomp"
   ],
   "author": "lahsivjar",
   "license": "MIT",
@@ -34,6 +35,7 @@
     "eslint": "^4.13.0",
     "eslint-plugin-babel": "^4.1.2",
     "eslint-plugin-react": "^7.5.1",
+    "net": "^1.0.2",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",

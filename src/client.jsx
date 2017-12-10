@@ -6,21 +6,19 @@ import PropTypes from "prop-types";
 class SockJsClient extends React.Component {
 
   static defaultProps = {
-    debug: false,
     onConnect: () => {}
   }
   
   static propTypes = {
     url: PropTypes.string.isRequired,
-    debug: PropTypes.bool,
     topics: PropTypes.array.isRequired,
-    onConnect: propTypes.func,
+    onConnect: PropTypes.func,
     onMessage: PropTypes.func.isRequired
   }
 
   constructor(props) {
     super(props);
-    this.client = Stomp.overWS(new SockJS(this.props.url));
+    this.client = Stomp.over(new SockJS(this.props.url));
     this.subscriptions = new Map();
 
     this.state = {
@@ -33,7 +31,8 @@ class SockJsClient extends React.Component {
   }
 
   componentWillUnmount() {
-    this.topics.forEach((topic) => {
+    let subscribeTopics = this.subscriptions.keys();
+    this.subscribeTopics.forEach((topic) => {
       this.unsubscribe(topic);
     });
   }
@@ -46,7 +45,7 @@ class SockJsClient extends React.Component {
     this.client.connect({}, () => {
       this.setState({ connected: true });
       this.props.topics.forEach((topic) => {
-        subscribe(topic);
+        this.subscribe(topic);
       });
     });
   }
@@ -66,11 +65,7 @@ class SockJsClient extends React.Component {
 
   // Will be accessed by ref attribute from the parent component
   sendMessage = (topic, msg) => {
-    if (!this.subscriptions.has(topic)) {
-      throw "Not subscribed to the given topic";
-    } else {
-      this.client.send(topic, {}, msg);
-    }
+    this.client.send(topic, {}, msg);
   }
 }
 
