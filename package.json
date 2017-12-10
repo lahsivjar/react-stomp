@@ -1,0 +1,36 @@
+{
+  "name": "react-ws",
+  "version": "1.0.0",
+  "description": "React websocket component with sockjs support",
+  "main": "./dist/client.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src --out-dir dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lahsivjar/react-ws.git"
+  },
+  "keywords": [
+    "react",
+    "websocket",
+    "sockjs"
+  ],
+  "author": "lahsivjar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lahsivjar/react-ws/issues"
+  },
+  "homepage": "https://github.com/lahsivjar/react-ws#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "enzyme": "^3.2.0",
+    "prop-types": "^15.6.0",
+    "sinon": "^4.1.3",
+    "sockjs-client": "^1.1.4",
+    "stompjs": "^2.3.3"
+  }
+}
