@@ -1,6 +1,6 @@
 {
   "name": "react-stomp",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "React websocket component with STOMP over SockJS",
   "main": "./dist/client.js",
   "scripts": {
