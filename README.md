@@ -19,12 +19,14 @@ class SampleComponent extends React.Component {
     super(props);
   }
 
-  render (
-    <div>
-      <SockJsClient url='http://localhost:8080/ws' topics={['/topics/all']}
-          onMessage={(msg) => { console.log(msg); }} />
-    </div>
-  );
+  render() {
+    return (
+      <div>
+        <SockJsClient url='http://localhost:8080/ws' topics={['/topics/all']}
+            onMessage={(msg) => { console.log(msg); }} />
+      </div>
+    );
+  }
 }
 ```
 
