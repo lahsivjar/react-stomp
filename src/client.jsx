@@ -52,7 +52,7 @@ class SockJsClient extends React.Component {
 
   subscribe = (topic) => {
     let sub = this.client.subscribe(topic, (msg) => {
-      this.props.onMessage(msg);
+      this.props.onMessage(JSON.parse(msg.body));
     });
     this.subscriptions.set(topic, sub);
   }
