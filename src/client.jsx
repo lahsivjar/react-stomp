@@ -7,7 +7,8 @@ class SockJsClient extends React.Component {
 
   static defaultProps = {
     onConnect: () => {},
-    headers: {}
+    headers: {},
+    debug: false
   }
   
   static propTypes = {
@@ -15,13 +16,18 @@ class SockJsClient extends React.Component {
     topics: PropTypes.array.isRequired,
     onConnect: PropTypes.func,
     onMessage: PropTypes.func.isRequired,
-    headers: PropTypes.object
+    headers: PropTypes.object,
+    debug: PropTypes.bool
   }
 
   constructor(props) {
     super(props);
     this.client = Stomp.over(new SockJS(this.props.url));
     this.subscriptions = new Map();
+
+    if (!this.props.debug) {
+      this.client.debug = () => {};
+    }
 
     this.state = {
       connected: false
