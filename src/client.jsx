@@ -6,14 +6,16 @@ import PropTypes from "prop-types";
 class SockJsClient extends React.Component {
 
   static defaultProps = {
-    onConnect: () => {}
+    onConnect: () => {},
+    headers: {}
   }
   
   static propTypes = {
     url: PropTypes.string.isRequired,
     topics: PropTypes.array.isRequired,
     onConnect: PropTypes.func,
-    onMessage: PropTypes.func.isRequired
+    onMessage: PropTypes.func.isRequired,
+    headers: PropTypes.object
   }
 
   constructor(props) {
@@ -42,7 +44,7 @@ class SockJsClient extends React.Component {
   }
 
   connect = () => {
-    this.client.connect({}, () => {
+    this.client.connect(this.props.headers, () => {
       this.setState({ connected: true });
       this.props.topics.forEach((topic) => {
         this.subscribe(topic);
@@ -64,8 +66,8 @@ class SockJsClient extends React.Component {
   }
 
   // Will be accessed by ref attribute from the parent component
-  sendMessage = (topic, msg) => {
-    this.client.send(topic, {}, msg);
+  sendMessage = (topic, msg, opt_headers = {}) => {
+    this.client.send(topic, opt_headers, msg);
   }
 }
 

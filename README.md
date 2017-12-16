@@ -30,7 +30,7 @@ class SampleComponent extends React.Component {
 }
 ```
 
-## API
+## Parameters
 
 * `url`: HTTP URL of the websocket endpoint to connect
 * `topics`: An array of topics to subscribe
