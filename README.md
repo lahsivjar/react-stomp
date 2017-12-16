@@ -19,11 +19,16 @@ class SampleComponent extends React.Component {
     super(props);
   }
 
+  sendMessage = (msg) => {
+    this.clientRef.sendMessage('/topics/all', msg);
+  }
+
   render() {
     return (
       <div>
         <SockJsClient url='http://localhost:8080/ws' topics={['/topics/all']}
-            onMessage={(msg) => { console.log(msg); }} />
+            onMessage={(msg) => { console.log(msg); }}
+            ref={ (client) => { this.clientRef = client }} />
       </div>
     );
   }
@@ -36,6 +41,11 @@ class SampleComponent extends React.Component {
 * `topics`: An array of topics to subscribe
 * `onMessage`: Callback when a message is recieved
 * `onConnect`: Callback after connection is established
+* `debug`: Enable debugging mode
+
+## API
+
+* `sendMessage(topic, msg, opt_headers)`: Send message to the specified topic
 
 ## Issues
 
