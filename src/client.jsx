@@ -7,6 +7,7 @@ class SockJsClient extends React.Component {
 
   static defaultProps = {
     onConnect: () => {},
+    onDisconnect: () => {},
     headers: {},
     debug: false
   }
@@ -15,6 +16,7 @@ class SockJsClient extends React.Component {
     url: PropTypes.string.isRequired,
     topics: PropTypes.array.isRequired,
     onConnect: PropTypes.func,
+    onDisconnect: PropTypes.func,
     onMessage: PropTypes.func.isRequired,
     headers: PropTypes.object,
     debug: PropTypes.bool
@@ -55,6 +57,9 @@ class SockJsClient extends React.Component {
       this.props.topics.forEach((topic) => {
         this.subscribe(topic);
       });
+      this.props.onConnect();
+    }, (error) => {
+      this.props.onDisconnect();
     });
   }
 
