@@ -9,6 +9,7 @@ class SockJsClient extends React.Component {
     onConnect: () => {},
     onDisconnect: () => {},
     headers: {},
+    autoReconnect: true,
     debug: false
   }
   
@@ -19,14 +20,12 @@ class SockJsClient extends React.Component {
     onDisconnect: PropTypes.func,
     onMessage: PropTypes.func.isRequired,
     headers: PropTypes.object,
+    autoReconnect: PropTypes.bool,
     debug: PropTypes.bool
   }
 
   constructor(props) {
     super(props);
-    this.client = Stomp.over(new SockJS(this.props.url));
-    this.subscriptions = new Map();
-
     if (!this.props.debug) {
       this.client.debug = () => {};
     }
@@ -34,6 +33,8 @@ class SockJsClient extends React.Component {
     this.state = {
       connected: false
     };
+
+    this.subscriptions = new Map();
   }
 
   componentDidMount() {
@@ -52,15 +53,30 @@ class SockJsClient extends React.Component {
   }
 
   connect = () => {
+    // Websocket held by stompjs can be opened only once
+    this.client = Stomp.over(new SockJS(this.props.url));
     this.client.connect(this.props.headers, () => {
       this.setState({ connected: true });
+      if (this.periodicPoller) {
+        this.periodicPoller = clearInterval(this.periodicPoller);
+      }
       this.props.topics.forEach((topic) => {
         this.subscribe(topic);
       });
       this.props.onConnect();
     }, (error) => {
-      this.props.onDisconnect();
+      if (this.state.connected) {
+        this._cleanUp();
+        this.periodicPoller = setInterval(this.connect, 5000);
+        // onDisconnect should be called only once per connect
+        this.props.onDisconnect();
+      }
     });
+  }
+
+  _cleanUp = () => {
+    this.setState({ connected: false });
+    this.subscriptions.clear();
   }
 
   subscribe = (topic) => {
@@ -76,9 +92,13 @@ class SockJsClient extends React.Component {
     this.subscriptions.delete(topic);
   }
 
-  // Will be accessed by ref attribute from the parent component
+  // Below methods can be accessed by ref attribute from the parent component
   sendMessage = (topic, msg, opt_headers = {}) => {
-    this.client.send(topic, opt_headers, msg);
+    if (this.state.connected) {
+      this.client.send(topic, opt_headers, msg);
+    } else {
+      console.error("Send error: SockJsClient is disconnected");
+    }
   }
 }
 
