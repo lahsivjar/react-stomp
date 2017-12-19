@@ -42,8 +42,7 @@ class SockJsClient extends React.Component {
   }
 
   componentWillUnmount() {
-    let subscribeTopics = this.subscriptions.keys();
-    this.subscribeTopics.forEach((topic) => {
+    this.subscriptions.forEach((subid, topic) => {
       this.unsubscribe(topic);
     });
   }
