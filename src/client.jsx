@@ -28,9 +28,6 @@ class SockJsClient extends React.Component {
 
   constructor(props) {
     super(props);
-    if (!this.props.debug) {
-      this.client.debug = () => {};
-    }
 
     this.state = {
       connected: false
@@ -56,8 +53,7 @@ class SockJsClient extends React.Component {
   }
 
   connect = () => {
-    // Websocket held by stompjs can be opened only once
-    this.client = Stomp.over(new SockJS(this.props.url));
+    _initStompClient();
     this.client.connect(this.props.headers, () => {
       this.setState({ connected: true });
       this.props.topics.forEach((topic) => {
@@ -74,6 +70,14 @@ class SockJsClient extends React.Component {
         setTimeout(this.connect, this.props.getRetryInterval(this.retryCount++));
       }
     });
+  }
+
+  _initStompClient = () => {
+    // Websocket held by stompjs can be opened only once
+    this.client = Stomp.over(new SockJS(this.props.url));
+    if (!this.props.debug) {
+      this.client.debug = () => {};
+    }
   }
 
   _cleanUp = () => {

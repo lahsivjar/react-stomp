@@ -44,7 +44,7 @@ class SampleComponent extends React.Component {
 * `onDisconnect`: Callback after connection is lost
 * `getRetryInterval`: Function property which takes a number parameter indicating the retry count for a particular disconnection and returns another number specifying the interval for next retry (will be ignored if auto reconnect is false, defaults to `retryCount` seconds)
 * `headers`: Headers that will be passed to the server or broker with connection request
-* `autoReconnect`: boolean indicating if retry should be attempted in an event of loosing connection (dfaults to `true`)
+* `autoReconnect`: boolean indicating if retry should be attempted in an event of loosing connection (defaults to `true`)
 * `debug`: Enable debugging mode (defaults to `false`)
 
 ## API
