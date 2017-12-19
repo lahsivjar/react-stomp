@@ -4,10 +4,10 @@
   "description": "React websocket component with STOMP over SockJS",
   "main": "./dist/client.js",
   "scripts": {
-    "prepublish": "npm run build",
+    "prepublish": "npm run test && npm run build",
     "lint": "eslint src/* test/*",
     "lint-fix": "eslint src/* test/* --fix",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm run lint && mocha --require babel-core/register --require test/bootstrap.js \"test/*.test.js\" --exit",
     "build": "babel src --out-dir dist"
   },
   "repository": {
@@ -32,10 +32,14 @@
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
+    "chai": "^4.1.2",
     "enzyme": "^3.2.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "^4.13.0",
     "eslint-plugin-babel": "^4.1.2",
     "eslint-plugin-react": "^7.5.1",
+    "jsdom": "^11.5.1",
+    "mocha": "^4.0.1",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
