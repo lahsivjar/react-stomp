@@ -53,7 +53,7 @@ class SockJsClient extends React.Component {
   }
 
   connect = () => {
-    _initStompClient();
+    this._initStompClient();
     this.client.connect(this.props.headers, () => {
       this.setState({ connected: true });
       this.props.topics.forEach((topic) => {
