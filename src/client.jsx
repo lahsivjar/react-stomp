@@ -8,12 +8,12 @@ class SockJsClient extends React.Component {
   static defaultProps = {
     onConnect: () => {},
     onDisconnect: () => {},
-    getRetryInterval: (count) => {return 1000 * count},
+    getRetryInterval: (count) => {return 1000 * count;},
     headers: {},
     autoReconnect: true,
     debug: false
   }
-  
+
   static propTypes = {
     url: PropTypes.string.isRequired,
     topics: PropTypes.array.isRequired,
