@@ -8,6 +8,7 @@ class SockJsClient extends React.Component {
   static defaultProps = {
     onConnect: () => {},
     onDisconnect: () => {},
+    getRetryInterval: (count) => {return 1000 * count},
     headers: {},
     autoReconnect: true,
     debug: false
@@ -18,6 +19,7 @@ class SockJsClient extends React.Component {
     topics: PropTypes.array.isRequired,
     onConnect: PropTypes.func,
     onDisconnect: PropTypes.func,
+    getRetryInterval: PropTypes.func,
     onMessage: PropTypes.func.isRequired,
     headers: PropTypes.object,
     autoReconnect: PropTypes.bool,
@@ -35,6 +37,7 @@ class SockJsClient extends React.Component {
     };
 
     this.subscriptions = new Map();
+    this.retryCount = 0;
   }
 
   componentDidMount() {
@@ -57,9 +60,6 @@ class SockJsClient extends React.Component {
     this.client = Stomp.over(new SockJS(this.props.url));
     this.client.connect(this.props.headers, () => {
       this.setState({ connected: true });
-      if (this.periodicPoller) {
-        this.periodicPoller = clearInterval(this.periodicPoller);
-      }
       this.props.topics.forEach((topic) => {
         this.subscribe(topic);
       });
@@ -67,15 +67,18 @@ class SockJsClient extends React.Component {
     }, (error) => {
       if (this.state.connected) {
         this._cleanUp();
-        this.periodicPoller = setInterval(this.connect, 5000);
         // onDisconnect should be called only once per connect
         this.props.onDisconnect();
+      }
+      if (this.props.autoReconnect) {
+        setTimeout(this.connect, this.props.getRetryInterval(this.retryCount++));
       }
     });
   }
 
   _cleanUp = () => {
     this.setState({ connected: false });
+    this.retryCount = 0;
     this.subscriptions.clear();
   }
 
