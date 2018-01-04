@@ -32,4 +32,12 @@ describe("<SockJsClient />", () => {
     connectSpy.restore();
     mountedComponent.unmount();
   });
+
+  it("Connection is closed on unmount", () => {
+    const disconnectSpy = sinon.spy(SockJsClient.prototype, "componentWillUnmount");
+    const mountedComponent = mount(clientTypes.onlyRequired);
+    mountedComponent.unmount();
+    expect(disconnectSpy.calledOnce).to.be.true;
+    disconnectSpy.restore();
+  });
 });

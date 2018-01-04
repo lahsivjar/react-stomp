@@ -42,13 +42,31 @@ class SockJsClient extends React.Component {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach((subid, topic) => {
-      this.unsubscribe(topic);
-    });
+    this.disconnect();
   }
 
   render() {
     return (<div></div>);
+  }
+
+  _initStompClient = () => {
+    // Websocket held by stompjs can be opened only once
+    this.client = Stomp.over(new SockJS(this.props.url));
+    if (!this.props.debug) {
+      this.client.debug = () => {};
+    }
+  }
+
+  _cleanUp = () => {
+    this.setState({ connected: false });
+    this.retryCount = 0;
+    this.subscriptions.clear();
+  }
+
+  _log = (msg) => {
+    if (this.props.debug) {
+      console.log(msg);
+    }
   }
 
   connect = () => {
@@ -71,18 +89,16 @@ class SockJsClient extends React.Component {
     });
   }
 
-  _initStompClient = () => {
-    // Websocket held by stompjs can be opened only once
-    this.client = Stomp.over(new SockJS(this.props.url));
-    if (!this.props.debug) {
-      this.client.debug = () => {};
+  disconnect = () => {
+    if (this.state.connected) {
+      this.subscriptions.forEach((subid, topic) => {
+        this.unsubscribe(topic);
+      });
+      this.client.disconnect(() => {
+        this._cleanUp();
+        this._log("Stomp client is successfully disconnected!");
+      });
     }
-  }
-
-  _cleanUp = () => {
-    this.setState({ connected: false });
-    this.retryCount = 0;
-    this.subscriptions.clear();
   }
 
   subscribe = (topic) => {
