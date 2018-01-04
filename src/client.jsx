@@ -84,12 +84,17 @@ class SockJsClient extends React.Component {
         this.props.onDisconnect();
       }
       if (this.props.autoReconnect) {
-        setTimeout(this.connect, this.props.getRetryInterval(this.retryCount++));
+        this._timeoutId = setTimeout(this.connect, this.props.getRetryInterval(this.retryCount++));
       }
     });
   }
 
   disconnect = () => {
+    // On calling disconnect explicitly no effort will be made to reconnect
+    // Clear timeoutId in case the component is trying to reconnect
+    if (this._timeoutId) {
+      clearTimeout(this._timeoutId);
+    }
     if (this.state.connected) {
       this.subscriptions.forEach((subid, topic) => {
         this.unsubscribe(topic);
