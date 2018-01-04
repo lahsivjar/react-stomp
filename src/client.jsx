@@ -101,6 +101,7 @@ class SockJsClient extends React.Component {
       });
       this.client.disconnect(() => {
         this._cleanUp();
+        this.props.onDisconnect();
         this._log("Stomp client is successfully disconnected!");
       });
     }
