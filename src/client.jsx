@@ -42,13 +42,31 @@ class SockJsClient extends React.Component {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach((subid, topic) => {
-      this.unsubscribe(topic);
-    });
+    this.disconnect();
   }
 
   render() {
     return (<div></div>);
+  }
+
+  _initStompClient = () => {
+    // Websocket held by stompjs can be opened only once
+    this.client = Stomp.over(new SockJS(this.props.url));
+    if (!this.props.debug) {
+      this.client.debug = () => {};
+    }
+  }
+
+  _cleanUp = () => {
+    this.setState({ connected: false });
+    this.retryCount = 0;
+    this.subscriptions.clear();
+  }
+
+  _log = (msg) => {
+    if (this.props.debug) {
+      console.log(msg);
+    }
   }
 
   connect = () => {
@@ -66,23 +84,26 @@ class SockJsClient extends React.Component {
         this.props.onDisconnect();
       }
       if (this.props.autoReconnect) {
-        setTimeout(this.connect, this.props.getRetryInterval(this.retryCount++));
+        this._timeoutId = setTimeout(this.connect, this.props.getRetryInterval(this.retryCount++));
       }
     });
   }
 
-  _initStompClient = () => {
-    // Websocket held by stompjs can be opened only once
-    this.client = Stomp.over(new SockJS(this.props.url));
-    if (!this.props.debug) {
-      this.client.debug = () => {};
+  disconnect = () => {
+    // On calling disconnect explicitly no effort will be made to reconnect
+    // Clear timeoutId in case the component is trying to reconnect
+    if (this._timeoutId) {
+      clearTimeout(this._timeoutId);
     }
-  }
-
-  _cleanUp = () => {
-    this.setState({ connected: false });
-    this.retryCount = 0;
-    this.subscriptions.clear();
+    if (this.state.connected) {
+      this.subscriptions.forEach((subid, topic) => {
+        this.unsubscribe(topic);
+      });
+      this.client.disconnect(() => {
+        this._cleanUp();
+        this._log("Stomp client is successfully disconnected!");
+      });
+    }
   }
 
   subscribe = (topic) => {
