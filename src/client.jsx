@@ -2,6 +2,7 @@ import React from "react";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import PropTypes from "prop-types";
+import Lo from "lodash";
 
 class SockJsClient extends React.Component {
 
@@ -10,6 +11,7 @@ class SockJsClient extends React.Component {
     onDisconnect: () => {},
     getRetryInterval: (count) => {return 1000 * count;},
     headers: {},
+    subscribeHeaders: {},
     autoReconnect: true,
     debug: false
   }
@@ -22,6 +24,7 @@ class SockJsClient extends React.Component {
     getRetryInterval: PropTypes.func,
     onMessage: PropTypes.func.isRequired,
     headers: PropTypes.object,
+    subscribeHeaders: PropTypes.object,
     autoReconnect: PropTypes.bool,
     debug: PropTypes.bool
   }
@@ -43,6 +46,24 @@ class SockJsClient extends React.Component {
 
   componentWillUnmount() {
     this.disconnect();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.state.connected) {
+      // Subscribe to new topics
+      Lo.difference(nextProps.topics, this.props.topics)
+        .forEach((newTopic) => {
+          this._log("Subscribing to topic: " + newTopic);
+          this.subscribe(newTopic);
+        });
+
+      // Unsubscribe from old topics
+      Lo.difference(this.props.topics, nextProps.topics)
+        .forEach((oldTopic) => {
+          this._log("Unsubscribing from topic: " + oldTopic);
+          this.unsubscribe(oldTopic);
+        });
+    }
   }
 
   render() {
@@ -109,8 +130,8 @@ class SockJsClient extends React.Component {
 
   subscribe = (topic) => {
     let sub = this.client.subscribe(topic, (msg) => {
-      this.props.onMessage(JSON.parse(msg.body));
-    });
+      this.props.onMessage(JSON.parse(msg.body), topic);
+    }, Lo.slice(this.props.subscribeHeaders));
     this.subscriptions.set(topic, sub);
   }
 
