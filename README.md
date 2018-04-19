@@ -46,6 +46,9 @@ A working implementation using [Spring Boot](https://projects.spring.io/spring-b
 * `topics`: An array of topics to subscribe
 * `onMessage`: Callback when a message is recieved
 * `onConnect`: Callback after connection is established
+* `heartbeat`: Number of milliseconds to send and expect heartbeat messages
+* `heartbeatIncoming`: Number of milliseconds to expect heartbeat messages
+* `heartbeatOutgoing`: Number of milliseconds to send heartbeat messages
 * `onDisconnect`: Callback after connection is lost
 * `getRetryInterval`: Function property which takes a number parameter indicating the retry count for a particular disconnection and returns another number specifying the interval for next retry (will be ignored if auto reconnect is false, defaults to `retryCount` seconds)
 * `headers`: Headers that will be passed to the server or broker with connection request
