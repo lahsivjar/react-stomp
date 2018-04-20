@@ -26,7 +26,10 @@ class SockJsClient extends React.Component {
     headers: PropTypes.object,
     subscribeHeaders: PropTypes.object,
     autoReconnect: PropTypes.bool,
-    debug: PropTypes.bool
+    debug: PropTypes.bool,
+    heartbeat: PropTypes.number,
+    heartbeatIncoming: PropTypes.number,
+    heartbeatOutgoing: PropTypes.number,
   }
 
   constructor(props) {
@@ -73,6 +76,16 @@ class SockJsClient extends React.Component {
   _initStompClient = () => {
     // Websocket held by stompjs can be opened only once
     this.client = Stomp.over(new SockJS(this.props.url));
+    if (this.props.heartbeat) {
+      this.client.heartbeat.outgoing = this.props.heartbeat;
+      this.client.heartbeat.incoming = this.props.heartbeat;
+    }
+    if (Object.keys(this.props).includes('heartbeatIncoming')) {
+      this.client.heartbeat.incoming = this.props.heartbeatIncoming;
+    }
+    if (Object.keys(this.props).includes('heartbeatOutgoing')) {
+      this.client.heartbeat.outgoing = this.props.heartbeatOutgoing;
+    }
     if (!this.props.debug) {
       this.client.debug = () => {};
     }
