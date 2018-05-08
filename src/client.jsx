@@ -80,10 +80,10 @@ class SockJsClient extends React.Component {
       this.client.heartbeat.outgoing = this.props.heartbeat;
       this.client.heartbeat.incoming = this.props.heartbeat;
     }
-    if (Object.keys(this.props).includes('heartbeatIncoming')) {
+    if (Object.keys(this.props).includes("heartbeatIncoming")) {
       this.client.heartbeat.incoming = this.props.heartbeatIncoming;
     }
-    if (Object.keys(this.props).includes('heartbeatOutgoing')) {
+    if (Object.keys(this.props).includes("heartbeatOutgoing")) {
       this.client.heartbeat.outgoing = this.props.heartbeatOutgoing;
     }
     if (!this.props.debug) {
