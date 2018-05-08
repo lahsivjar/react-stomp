@@ -10,6 +10,7 @@ class SockJsClient extends React.Component {
     onConnect: () => {},
     onDisconnect: () => {},
     getRetryInterval: (count) => {return 1000 * count;},
+    options: {},
     headers: {},
     subscribeHeaders: {},
     autoReconnect: true,
@@ -18,6 +19,7 @@ class SockJsClient extends React.Component {
 
   static propTypes = {
     url: PropTypes.string.isRequired,
+    options: PropTypes.object,
     topics: PropTypes.array.isRequired,
     onConnect: PropTypes.func,
     onDisconnect: PropTypes.func,
@@ -29,7 +31,7 @@ class SockJsClient extends React.Component {
     debug: PropTypes.bool,
     heartbeat: PropTypes.number,
     heartbeatIncoming: PropTypes.number,
-    heartbeatOutgoing: PropTypes.number,
+    heartbeatOutgoing: PropTypes.number
   }
 
   constructor(props) {
@@ -75,7 +77,7 @@ class SockJsClient extends React.Component {
 
   _initStompClient = () => {
     // Websocket held by stompjs can be opened only once
-    this.client = Stomp.over(new SockJS(this.props.url));
+    this.client = Stomp.over(new SockJS(this.props.url, null, this.props.options));
     if (this.props.heartbeat) {
       this.client.heartbeat.outgoing = this.props.heartbeat;
       this.client.heartbeat.incoming = this.props.heartbeat;
