@@ -72,7 +72,7 @@ class SockJsClient extends React.Component {
   }
 
   render() {
-    return (<div></div>);
+    return null;
   }
 
   _initStompClient = () => {
