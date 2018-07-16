@@ -1,6 +1,6 @@
 import React from "react";
 import sinon from "sinon";
-import { mount } from "enzyme";
+import { mount, shallow } from "enzyme";
 import { expect } from "chai";
 
 import SockJsClient from "../src/client.jsx";
@@ -13,16 +13,16 @@ const clientTypes = {
 };
 
 describe("<SockJsClient />", () => {
-  it("Renders a div with only required props", () => {
-    const mountedComponent = mount(clientTypes.onlyRequired);
-    expect(mountedComponent.find("div").length).to.equal(1);
-    mountedComponent.unmount();
+  it("Renders null with only required props", () => {
+    const wrapper = shallow(clientTypes.onlyRequired);
+    expect(wrapper.getElement()).to.be.null;
+    wrapper.unmount();
   });
 
-  it("Renders a div with additional debug prop", () => {
-    const mountedComponent = mount(clientTypes.withDebug);
-    expect(mountedComponent.find("div").length).to.equal(1);
-    mountedComponent.unmount();
+  it("Renders null with additional debug prop", () => {
+    const wrapper = shallow(clientTypes.withDebug);
+    expect(wrapper.getElement()).to.be.null;
+    wrapper.unmount();
   });
 
   it("Connect is called once", () => {
