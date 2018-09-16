@@ -5,13 +5,13 @@ React component for [SockJS-client](https://github.com/sockjs/sockjs-client) wit
 
 ## Installation
 
-```
+```sh
 npm install --save react-stomp
 ```
 
 ## Example Usage
 
-```
+```jsx
 import React from 'react';
 import SockJsClient from 'react-stomp';
 
