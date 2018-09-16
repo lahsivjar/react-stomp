@@ -3,13 +3,19 @@
   "version": "3.3.0",
   "description": "React websocket component with STOMP over SockJS",
   "main": "./dist/client.js",
+  "nyc": {
+    "extension": [
+      ".jsx"
+    ]
+  },
   "scripts": {
     "prepublish": "npm run test && npm run build",
     "lint": "eslint src/* test/*",
     "lint-fix": "eslint src/* test/* --fix",
     "test": "npm run lint && mocha --require babel-core/register --require test/bootstrap.js \"test/unit.test.js\" --exit",
-    "e2e-test": "npm run lint && mocha --require babel-core/register --require test/bootstrap.js \"test/e2e.test.js\" --exit",
-    "build": "babel src --out-dir dist"
+    "e2e-test": "npm run lint && nyc mocha --require babel-core/register --require test/bootstrap.js \"test/*.test.js\" --exit",
+    "build": "babel src --out-dir dist",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
@@ -34,6 +40,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "chai": "^4.1.2",
+    "coveralls": "^3.0.2",
     "enzyme": "^3.6.0",
     "enzyme-adapter-react-16": "^1.5.0",
     "eslint": "^5.5.0",
@@ -42,6 +49,7 @@
     "jsdom": "^12.0.0",
     "lodash": "^4.17.10",
     "mocha": "^5.2.0",
+    "nyc": "^13.0.1",
     "prop-types": "^15.6.2",
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
