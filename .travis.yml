@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+  - "7"
+
+services:
+  - docker
+
+before_script:
+  - docker run -d -p 8089:8080 lahsivjar/stomp-test-docker-image
+  - sleep 10
+
+script:
+  - npm run test
+  - npm run e2e-test

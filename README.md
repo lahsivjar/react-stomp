@@ -1,4 +1,5 @@
 # react-stomp
+[![Build Status](https://travis-ci.org/lahsivjar/react-stomp.svg?branch=master)](https://travis-ci.org/lahsivjar/react-stomp)
 
 React component for [SockJS-client](https://github.com/sockjs/sockjs-client) with [STOMP](https://stomp.github.io/) messaging protocol.
 
