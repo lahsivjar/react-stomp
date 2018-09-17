@@ -12,8 +12,10 @@
     "prepublish": "npm run test && npm run build",
     "lint": "eslint src/* test/*",
     "lint-fix": "eslint src/* test/* --fix",
-    "test": "npm run lint && mocha --require babel-core/register --require test/bootstrap.js \"test/unit.test.js\" --exit",
-    "e2e-test": "npm run lint && nyc mocha --require babel-core/register --require test/bootstrap.js \"test/*.test.js\" --exit",
+    "test": "npm run lint && mocha --require babel-core/register --require test/bootstrap.js --recursive test/unit --exit",
+    "e2e-test": "npm run lint && mocha --require babel-core/register --require test/bootstrap.js --recursive test/e2e --exit",
+    "all-test": "npm run lint && nyc mocha --require babel-core/register --require test/bootstrap.js --recursive test --exit",
+    "ci": "server-test http://localhost:8089/health all-test",
     "build": "babel src --out-dir dist",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },

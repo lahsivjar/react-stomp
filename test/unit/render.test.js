@@ -3,7 +3,7 @@ import sinon from "sinon";
 import { mount, shallow } from "enzyme";
 import { expect } from "chai";
 
-import SockJsClient from "../src/client.jsx";
+import SockJsClient from "../../src/client.jsx";
 
 const clientTypes = {
   onlyRequired: <SockJsClient url="http://localhost:8080/ws" topics={["/topics/all"]}
