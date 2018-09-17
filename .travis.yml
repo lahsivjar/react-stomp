@@ -10,6 +10,6 @@ before_script:
   - sleep 10
 
 script:
-  - npm run e2e-test
+  - npm run all-test
 
 after_success: npm run coverage
