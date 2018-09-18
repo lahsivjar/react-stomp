@@ -40,20 +40,52 @@ describe("<SockJsClient />", () => {
     disconnectSpy.restore();
   });
 
-  it("Attempt reconnect on bad connection", () => {
+  it("Send without connect should throw error", () => {
+    const mountedComponent = mount(<SockJsClient url="http://thisisfakewsurl/ws" topics={["/topics/all"]}
+      debug={ true } onMessage={(msg) => { console.log(msg); }} />);
+    const client = mountedComponent.instance();
+    expect(() => { client.sendMessage("/app/all", "i will fail"); }).to.throw("Send error: SockJsClient is disconnected");
+  });
+
+  it("Attempt reconnect on bad connection", (done) => {
     const retryIntervalFunc = sinon.fake.returns(100);
     const mountedComponent = mount(<SockJsClient url="http://thisisfakewsurl/ws" topics={["/topics/all"]}
       debug={ true } onMessage={(msg) => { console.log(msg); }} getRetryInterval={ retryIntervalFunc } />);
 
     setTimeout(() => {
       expect(retryIntervalFunc.calledTwice).to.be.true;
+      done();
     }, 210);
   });
 
-  it("Send without connect should throw error", () => {
+  it("On explicit disconnect don't try reconnect", (done) => {
+    const retryIntervalFunc = sinon.fake.returns(20);
     const mountedComponent = mount(<SockJsClient url="http://thisisfakewsurl/ws" topics={["/topics/all"]}
-      debug={ true } onMessage={(msg) => { console.log(msg); }} />);
-    const client = mountedComponent.instance();
-    expect(() => { client.sendMessage("/app/all", "i will fail"); }).to.throw("Send error: SockJsClient is disconnected");
+      debug={ true } onMessage={(msg) => { console.log(msg); }} getRetryInterval={ retryIntervalFunc } />);
+
+    setTimeout(() => {
+      const reconnectCount = retryIntervalFunc.callCount;
+      expect(reconnectCount).to.be.above(1);
+      mountedComponent.instance().disconnect();
+      validateDisconnect(reconnectCount);
+    }, 110);
+
+    const validateDisconnect = (reconnectCount) => {
+      setTimeout(() => {
+        expect(retryIntervalFunc.callCount).to.equal(reconnectCount);
+        done();
+      }, 110);
+    };
+  });
+
+  it("No reconnection with auto reconnect false", (done) => {
+    const retryIntervalFunc = sinon.fake.returns(10);
+    const mountedComponent = mount(<SockJsClient url="http://thisisfakewsurl/ws" topics={["/topics/all"]}
+      debug={ true } onMessage={(msg) => { console.log(msg); }} getRetryInterval={ retryIntervalFunc } autoReconnect={ false }/>);
+
+    setTimeout(() => {
+      expect(retryIntervalFunc.notCalled).to.be.true;
+      done();
+    }, 110);
   });
 });
