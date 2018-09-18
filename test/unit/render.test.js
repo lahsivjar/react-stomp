@@ -6,9 +6,9 @@ import { expect } from "chai";
 import SockJsClient from "../../src/client.jsx";
 
 const clientTypes = {
-  onlyRequired: <SockJsClient url="http://localhost:8080/ws" topics={["/topics/all"]}
+  onlyRequired: <SockJsClient url="http://thisisfakewsurl/ws" topics={["/topics/all"]}
     onMessage={(msg) => { console.log(msg); }} />,
-  withDebug: <SockJsClient url="http://localhost:8080/ws" topics={["/topics/all"]}
+  withDebug: <SockJsClient url="http://thisisfakewsurl/ws" topics={["/topics/all"]}
     debug={ true } onMessage={(msg) => { console.log(msg); }} />
 };
 
@@ -24,7 +24,6 @@ describe("<SockJsClient />", () => {
     expect(wrapper.getElement()).to.be.null;
     wrapper.unmount();
   });
-
   it("Connect is called once", () => {
     const connectSpy = sinon.spy(SockJsClient.prototype, "componentDidMount");
     const mountedComponent = mount(clientTypes.onlyRequired);
@@ -39,5 +38,22 @@ describe("<SockJsClient />", () => {
     mountedComponent.unmount();
     expect(disconnectSpy.calledOnce).to.be.true;
     disconnectSpy.restore();
+  });
+
+  it("Attempt reconnect on bad connection", () => {
+    const retryIntervalFunc = sinon.fake.returns(100);
+    const mountedComponent = mount(<SockJsClient url="http://thisisfakewsurl/ws" topics={["/topics/all"]}
+      debug={ true } onMessage={(msg) => { console.log(msg); }} getRetryInterval={ retryIntervalFunc } />);
+
+    setTimeout(() => {
+      expect(retryIntervalFunc.calledTwice).to.be.true;
+    }, 210);
+  });
+
+  it("Send without connect should throw error", () => {
+    const mountedComponent = mount(<SockJsClient url="http://thisisfakewsurl/ws" topics={["/topics/all"]}
+      debug={ true } onMessage={(msg) => { console.log(msg); }} />);
+    const client = mountedComponent.instance();
+    expect(() => { client.sendMessage("/app/all", "i will fail"); }).to.throw("Send error: SockJsClient is disconnected");
   });
 });
