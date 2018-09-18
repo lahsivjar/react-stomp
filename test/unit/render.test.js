@@ -24,6 +24,7 @@ describe("<SockJsClient />", () => {
     expect(wrapper.getElement()).to.be.null;
     wrapper.unmount();
   });
+
   it("Connect is called once", () => {
     const connectSpy = sinon.spy(SockJsClient.prototype, "componentDidMount");
     const mountedComponent = mount(clientTypes.onlyRequired);
@@ -42,7 +43,7 @@ describe("<SockJsClient />", () => {
 
   it("Send without connect should throw error", () => {
     const mountedComponent = mount(<SockJsClient url="http://thisisfakewsurl/ws" topics={["/topics/all"]}
-      debug={ true } onMessage={(msg) => { console.log(msg); }} />);
+      debug={ false } onMessage={(msg) => { console.log(msg); }} />);
     const client = mountedComponent.instance();
     expect(() => { client.sendMessage("/app/all", "i will fail"); }).to.throw("Send error: SockJsClient is disconnected");
   });
@@ -50,7 +51,7 @@ describe("<SockJsClient />", () => {
   it("Attempt reconnect on bad connection", (done) => {
     const retryIntervalFunc = sinon.fake.returns(100);
     const mountedComponent = mount(<SockJsClient url="http://thisisfakewsurl/ws" topics={["/topics/all"]}
-      debug={ true } onMessage={(msg) => { console.log(msg); }} getRetryInterval={ retryIntervalFunc } />);
+      debug={ false } onMessage={(msg) => { console.log(msg); }} getRetryInterval={ retryIntervalFunc } />);
 
     setTimeout(() => {
       expect(retryIntervalFunc.calledTwice).to.be.true;
@@ -61,7 +62,7 @@ describe("<SockJsClient />", () => {
   it("On explicit disconnect don't try reconnect", (done) => {
     const retryIntervalFunc = sinon.fake.returns(20);
     const mountedComponent = mount(<SockJsClient url="http://thisisfakewsurl/ws" topics={["/topics/all"]}
-      debug={ true } onMessage={(msg) => { console.log(msg); }} getRetryInterval={ retryIntervalFunc } />);
+      debug={ false } onMessage={(msg) => { console.log(msg); }} getRetryInterval={ retryIntervalFunc } />);
 
     setTimeout(() => {
       mountedComponent.instance().disconnect();
@@ -73,7 +74,7 @@ describe("<SockJsClient />", () => {
         const reconnectCount = retryIntervalFunc.callCount;
         expect(reconnectCount).to.be.above(1);
         validateDisconnect(reconnectCount);
-      }, 0);
+      }, 20);
     };
 
     const validateDisconnect = (reconnectCount) => {
@@ -87,11 +88,39 @@ describe("<SockJsClient />", () => {
   it("No reconnection with auto reconnect false", (done) => {
     const retryIntervalFunc = sinon.fake.returns(10);
     const mountedComponent = mount(<SockJsClient url="http://thisisfakewsurl/ws" topics={["/topics/all"]}
-      debug={ true } onMessage={(msg) => { console.log(msg); }} getRetryInterval={ retryIntervalFunc } autoReconnect={ false }/>);
+      debug={ false } onMessage={(msg) => { console.log(msg); }} getRetryInterval={ retryIntervalFunc } autoReconnect={ false }/>);
 
     setTimeout(() => {
       expect(retryIntervalFunc.notCalled).to.be.true;
       done();
     }, 110);
+  });
+
+  it("Asserting heartbeat default", () => {
+    const mountedComponent = mount(<SockJsClient url="http://thisisfakewsurl/ws" topics={["/topics/all"]}
+      debug={ false } onMessage={(msg) => { console.log(msg); }} />);
+    expect(mountedComponent.instance().client.heartbeat.outgoing).to.equal(10000);
+    expect(mountedComponent.instance().client.heartbeat.incoming).to.equal(10000);
+  });
+
+  it("Asserting heartbeat override", () => {
+    const mountedComponent = mount(<SockJsClient url="http://thisisfakewsurl/ws" topics={["/topics/all"]}
+      debug={ false } onMessage={(msg) => { console.log(msg); }} heartbeat={ 12345 } />);
+    expect(mountedComponent.instance().client.heartbeat.outgoing).to.equal(12345);
+    expect(mountedComponent.instance().client.heartbeat.incoming).to.equal(12345);
+  });
+
+  it("Asserting heartbeat incoming override", () => {
+    const mountedComponent = mount(<SockJsClient url="http://thisisfakewsurl/ws" topics={["/topics/all"]}
+      debug={ false } onMessage={(msg) => { console.log(msg); }} heartbeatIncoming={ 23456 } />);
+    expect(mountedComponent.instance().client.heartbeat.outgoing).to.equal(10000);
+    expect(mountedComponent.instance().client.heartbeat.incoming).to.equal(23456);
+  });
+
+  it("Asserting heartbeat outgoing override", () => {
+    const mountedComponent = mount(<SockJsClient url="http://thisisfakewsurl/ws" topics={["/topics/all"]}
+      debug={ false } onMessage={(msg) => { console.log(msg); }} heartbeatOutgoing={ 23456 } />);
+    expect(mountedComponent.instance().client.heartbeat.outgoing).to.equal(23456);
+    expect(mountedComponent.instance().client.heartbeat.incoming).to.equal(10000);
   });
 });
