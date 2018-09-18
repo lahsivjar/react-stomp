@@ -2,7 +2,8 @@
 
 e2e test requires a real server running with the following requirements:
 - Provides STOMP endpoint at `/handler` with SockJS support
-- Sending a message to `/app/ping` returns a JSON object:
+- Sending a message to `/app/text/ping` returns a text object `pong`
+- Sending a message to `/app/json/ping` returns a JSON object:
   ```
   { "msg": "pong" }
   ```

@@ -64,11 +64,17 @@ describe("<SockJsClient />", () => {
       debug={ true } onMessage={(msg) => { console.log(msg); }} getRetryInterval={ retryIntervalFunc } />);
 
     setTimeout(() => {
-      const reconnectCount = retryIntervalFunc.callCount;
-      expect(reconnectCount).to.be.above(1);
       mountedComponent.instance().disconnect();
-      validateDisconnect(reconnectCount);
+      validateReconnect();
     }, 110);
+
+    const validateReconnect = () => {
+      setTimeout(() => {
+        const reconnectCount = retryIntervalFunc.callCount;
+        expect(reconnectCount).to.be.above(1);
+        validateDisconnect(reconnectCount);
+      }, 0);
+    };
 
     const validateDisconnect = (reconnectCount) => {
       setTimeout(() => {

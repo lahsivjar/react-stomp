@@ -147,9 +147,17 @@ class SockJsClient extends React.Component {
   subscribe = (topic) => {
     if (!this.subscriptions.has(topic)) {
       let sub = this.client.subscribe(topic, (msg) => {
-        this.props.onMessage(JSON.parse(msg.body), topic);
+        this.props.onMessage(this._processMessage(msg.body), topic);
       }, Lo.slice(this.props.subscribeHeaders));
       this.subscriptions.set(topic, sub);
+    }
+  }
+
+  _processMessage = (msgBody) => {
+    try {
+      return JSON.parse(msgBody);
+    } catch(e) {
+      return msgBody;
     }
   }
 
@@ -159,7 +167,6 @@ class SockJsClient extends React.Component {
     this.subscriptions.delete(topic);
   }
 
-  // Below methods can be accessed by ref attribute from the parent component
   sendMessage = (topic, msg, opt_headers = {}) => {
     if (this.state.connected) {
       this.client.send(topic, opt_headers, msg);
