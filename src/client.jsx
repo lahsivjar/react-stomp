@@ -14,7 +14,8 @@ class SockJsClient extends React.Component {
     headers: {},
     subscribeHeaders: {},
     autoReconnect: true,
-    debug: false
+    debug: false,
+    heartbeat: 10000
   }
 
   static propTypes = {
@@ -78,10 +79,10 @@ class SockJsClient extends React.Component {
   _initStompClient = () => {
     // Websocket held by stompjs can be opened only once
     this.client = Stomp.over(new SockJS(this.props.url, null, this.props.options));
-    if (this.props.heartbeat) {
-      this.client.heartbeat.outgoing = this.props.heartbeat;
-      this.client.heartbeat.incoming = this.props.heartbeat;
-    }
+
+    this.client.heartbeat.outgoing = this.props.heartbeat;
+    this.client.heartbeat.incoming = this.props.heartbeat;
+
     if (Object.keys(this.props).includes("heartbeatIncoming")) {
       this.client.heartbeat.incoming = this.props.heartbeatIncoming;
     }
@@ -163,7 +164,7 @@ class SockJsClient extends React.Component {
     if (this.state.connected) {
       this.client.send(topic, opt_headers, msg);
     } else {
-      console.error("Send error: SockJsClient is disconnected");
+      throw new Error("Send error: SockJsClient is disconnected");
     }
   }
 }
