@@ -39,7 +39,9 @@ class SockJsClient extends React.Component {
     super(props);
 
     this.state = {
-      connected: false
+      connected: false,
+      // False if disconnect method is called without a subsequent connect
+      explicitDisconnect: false
     };
 
     this.subscriptions = new Map();
@@ -47,11 +49,15 @@ class SockJsClient extends React.Component {
   }
 
   componentDidMount() {
-    this.connect();
+    this._connect();
   }
 
   componentWillUnmount() {
     this.disconnect();
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return false;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -60,14 +66,14 @@ class SockJsClient extends React.Component {
       Lo.difference(nextProps.topics, this.props.topics)
         .forEach((newTopic) => {
           this._log("Subscribing to topic: " + newTopic);
-          this.subscribe(newTopic);
+          this._subscribe(newTopic);
         });
 
       // Unsubscribe from old topics
       Lo.difference(this.props.topics, nextProps.topics)
         .forEach((oldTopic) => {
           this._log("Unsubscribing from topic: " + oldTopic);
-          this.unsubscribe(oldTopic);
+          this._unsubscribe(oldTopic);
         });
     }
   }
@@ -106,45 +112,7 @@ class SockJsClient extends React.Component {
     }
   }
 
-  connect = () => {
-    this._initStompClient();
-    this.client.connect(this.props.headers, () => {
-      this.setState({ connected: true });
-      this.props.topics.forEach((topic) => {
-        this.subscribe(topic);
-      });
-      this.props.onConnect();
-    }, (error) => {
-      if (this.state.connected) {
-        this._cleanUp();
-        // onDisconnect should be called only once per connect
-        this.props.onDisconnect();
-      }
-      if (this.props.autoReconnect) {
-        this._timeoutId = setTimeout(this.connect, this.props.getRetryInterval(this.retryCount++));
-      }
-    });
-  }
-
-  disconnect = () => {
-    // On calling disconnect explicitly no effort will be made to reconnect
-    // Clear timeoutId in case the component is trying to reconnect
-    if (this._timeoutId) {
-      clearTimeout(this._timeoutId);
-    }
-    if (this.state.connected) {
-      this.subscriptions.forEach((subid, topic) => {
-        this.unsubscribe(topic);
-      });
-      this.client.disconnect(() => {
-        this._cleanUp();
-        this.props.onDisconnect();
-        this._log("Stomp client is successfully disconnected!");
-      });
-    }
-  }
-
-  subscribe = (topic) => {
+  _subscribe = (topic) => {
     if (!this.subscriptions.has(topic)) {
       let sub = this.client.subscribe(topic, (msg) => {
         this.props.onMessage(this._processMessage(msg.body), topic);
@@ -161,10 +129,58 @@ class SockJsClient extends React.Component {
     }
   }
 
-  unsubscribe = (topic) => {
+  _unsubscribe = (topic) => {
     let sub = this.subscriptions.get(topic);
     sub.unsubscribe();
     this.subscriptions.delete(topic);
+  }
+
+  _connect = () => {
+    this._initStompClient();
+    this.client.connect(this.props.headers, () => {
+      this.setState({ connected: true });
+      this.props.topics.forEach((topic) => {
+        this._subscribe(topic);
+      });
+      this.props.onConnect();
+    }, (error) => {
+      if (this.state.connected) {
+        this._cleanUp();
+        // onDisconnect should be called only once per connect
+        this.props.onDisconnect();
+      }
+      if (this.props.autoReconnect && !this.state.explicitDisconnect) {
+        this._timeoutId = setTimeout(this._connect, this.props.getRetryInterval(this.retryCount++));
+      }
+    });
+  }
+
+  // Public APIs
+  connect = () => {
+    this.setState({ explicitDisconnect: false });
+    if (! this.state.connected) {
+      this._connect();
+    }
+  }
+
+  disconnect = () => {
+    // On calling disconnect explicitly no effort will be made to reconnect
+    // Clear timeoutId in case the component is trying to reconnect
+    if (this._timeoutId) {
+      clearTimeout(this._timeoutId);
+      this._timeoutId = null;
+    }
+    this.setState({ explicitDisconnect: true });
+    if (this.state.connected) {
+      this.subscriptions.forEach((subid, topic) => {
+        this._unsubscribe(topic);
+      });
+      this.client.disconnect(() => {
+        this._cleanUp();
+        this.props.onDisconnect();
+        this._log("Stomp client is successfully disconnected!");
+      });
+    }
   }
 
   sendMessage = (topic, msg, opt_headers = {}) => {

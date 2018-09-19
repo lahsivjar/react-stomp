@@ -36,4 +36,37 @@ describe("<SockJsClient /> -> connect", () => {
       }, 100);
     };
   });
+
+  it("Websocket is connected -> disconnected -> connected", (done) => {
+    var clientRef = null;
+    const mountedComponent = mount(<SockJsClient url="http://localhost:8089/handler"
+      topics={["/topic/all"]} ref={(client) => { clientRef = client; }}
+      onMessage={(msg) => { console.log(msg); }} />);
+
+    setTimeout(() => {
+      expect(mountedComponent.state().connected).to.be.true;
+      mountedComponent.instance().disconnect();
+      verifyDisconnect();
+    }, 500);
+
+    const verifyDisconnect = () => {
+      setTimeout(() => {
+        expect(mountedComponent.state().connected).to.be.false;
+        expect(mountedComponent.instance().subscriptions.size).to.equal(0);
+        mountedComponent.instance().connect();
+        verifyConnect();
+      }, 500);
+    };
+
+    const verifyConnect = () => {
+      setTimeout(() => {
+        expect(mountedComponent.state().connected).to.be.true;
+        expect(mountedComponent.instance().subscriptions.size).to.equal(1);
+        // No error when connect called even if already connected
+        mountedComponent.instance().connect();
+        mountedComponent.unmount();
+        done();
+      }, 100);
+    };
+  });
 });

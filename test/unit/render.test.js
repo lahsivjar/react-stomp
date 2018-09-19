@@ -63,23 +63,47 @@ describe("<SockJsClient />", () => {
     const retryIntervalFunc = sinon.fake.returns(20);
     const mountedComponent = mount(<SockJsClient url="http://thisisfakewsurl/ws" topics={["/topics/all"]}
       debug={ false } onMessage={(msg) => { console.log(msg); }} getRetryInterval={ retryIntervalFunc } />);
+    const connectSpy = sinon.spy(mountedComponent.instance(), "_connect");
 
     setTimeout(() => {
       mountedComponent.instance().disconnect();
-      validateReconnect();
+      const reconnectCount = connectSpy.callCount;
+      expect(reconnectCount).to.be.above(1);
+      validateDisconnect(reconnectCount);
     }, 110);
-
-    const validateReconnect = () => {
-      setTimeout(() => {
-        const reconnectCount = retryIntervalFunc.callCount;
-        expect(reconnectCount).to.be.above(1);
-        validateDisconnect(reconnectCount);
-      }, 20);
-    };
 
     const validateDisconnect = (reconnectCount) => {
       setTimeout(() => {
-        expect(retryIntervalFunc.callCount).to.equal(reconnectCount);
+        expect(connectSpy.callCount).to.equal(reconnectCount);
+        mountedComponent.unmount();
+        done();
+      }, 110);
+    };
+  });
+
+  it("On explicit disconnect -> connect, try reconnect", (done) => {
+    const retryIntervalFunc = sinon.fake.returns(20);
+    const mountedComponent = mount(<SockJsClient url="http://thisisfakewsurl/ws" topics={["/topics/all"]}
+      debug={ false } onMessage={(msg) => { console.log(msg); }} getRetryInterval={ retryIntervalFunc } />);
+
+    setTimeout(() => {
+      mountedComponent.instance().disconnect();
+      connectBack();
+    }, 110);
+
+    const connectBack = () => {
+      setTimeout(() => {
+        const connectSpy = sinon.spy(mountedComponent.instance(), "_connect");
+        expect(connectSpy.callCount).to.equal(0);
+        mountedComponent.instance().connect();
+        validateReconnect(connectSpy);
+      }, 110);
+    };
+
+    const validateReconnect = (connectSpy) => {
+      setTimeout(() => {
+        expect(connectSpy.callCount).to.be.above(1);
+        mountedComponent.unmount();
         done();
       }, 110);
     };
