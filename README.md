@@ -60,10 +60,20 @@ A working implementation using [Spring Boot](https://projects.spring.io/spring-b
 ## API
 
 * `sendMessage(topic, msg, opt_headers)`: Send message to the specified topic
+* `disconnect`: Disconnect STOMP client without any reconnection attempt
+* `connect`: Try connecting to server (useful if `disconnect` is called explicitly before)
 
 ## Issues
 
 Report any issues or bugs to https://github.com/lahsivjar/react-stomp/issues
+
+## Changelog
+
+### 4.0.0
+
+- Improve test coverage
+- [BugFix #61] Add support for receiving plain text messages
+- [BugFix #70] Fix reconnect loop under certain circumstances even after disconnect is called
 
 ## License
 

@@ -39,7 +39,9 @@ class SockJsClient extends React.Component {
     super(props);
 
     this.state = {
-      connected: false
+      connected: false,
+      // False if disconnect method is called without a subsequent connect
+      explicitDisconnect: false
     };
 
     this.subscriptions = new Map();
@@ -47,7 +49,7 @@ class SockJsClient extends React.Component {
   }
 
   componentDidMount() {
-    this.connect();
+    this._connect();
   }
 
   componentWillUnmount() {
@@ -106,7 +108,7 @@ class SockJsClient extends React.Component {
     }
   }
 
-  connect = () => {
+  _connect = () => {
     this._initStompClient();
     this.client.connect(this.props.headers, () => {
       this.setState({ connected: true });
@@ -120,10 +122,17 @@ class SockJsClient extends React.Component {
         // onDisconnect should be called only once per connect
         this.props.onDisconnect();
       }
-      if (this.props.autoReconnect) {
-        this._timeoutId = setTimeout(this.connect, this.props.getRetryInterval(this.retryCount++));
+      if (this.props.autoReconnect && !this.state.explicitDisconnect) {
+        this._timeoutId = setTimeout(this._connect, this.props.getRetryInterval(this.retryCount++));
       }
     });
+  }
+
+  connect = () => {
+    this.setState({ explicitDisconnect: false });
+    if (! this.state.connected) {
+      this._connect();
+    }
   }
 
   disconnect = () => {
@@ -131,7 +140,9 @@ class SockJsClient extends React.Component {
     // Clear timeoutId in case the component is trying to reconnect
     if (this._timeoutId) {
       clearTimeout(this._timeoutId);
+      this._timeoutId = null;
     }
+    this.setState({ explicitDisconnect: true });
     if (this.state.connected) {
       this.subscriptions.forEach((subid, topic) => {
         this.unsubscribe(topic);
