@@ -62,6 +62,8 @@ describe("<SockJsClient /> -> connect", () => {
       setTimeout(() => {
         expect(mountedComponent.state().connected).to.be.true;
         expect(mountedComponent.instance().subscriptions.size).to.equal(1);
+        // No error when connect called even if already connected
+        mountedComponent.instance().connect();
         mountedComponent.unmount();
         done();
       }, 100);

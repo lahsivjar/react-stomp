@@ -56,20 +56,24 @@ class SockJsClient extends React.Component {
     this.disconnect();
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return false;
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.state.connected) {
       // Subscribe to new topics
       Lo.difference(nextProps.topics, this.props.topics)
         .forEach((newTopic) => {
           this._log("Subscribing to topic: " + newTopic);
-          this.subscribe(newTopic);
+          this._subscribe(newTopic);
         });
 
       // Unsubscribe from old topics
       Lo.difference(this.props.topics, nextProps.topics)
         .forEach((oldTopic) => {
           this._log("Unsubscribing from topic: " + oldTopic);
-          this.unsubscribe(oldTopic);
+          this._unsubscribe(oldTopic);
         });
     }
   }
@@ -108,12 +112,35 @@ class SockJsClient extends React.Component {
     }
   }
 
+  _subscribe = (topic) => {
+    if (!this.subscriptions.has(topic)) {
+      let sub = this.client.subscribe(topic, (msg) => {
+        this.props.onMessage(this._processMessage(msg.body), topic);
+      }, Lo.slice(this.props.subscribeHeaders));
+      this.subscriptions.set(topic, sub);
+    }
+  }
+
+  _processMessage = (msgBody) => {
+    try {
+      return JSON.parse(msgBody);
+    } catch(e) {
+      return msgBody;
+    }
+  }
+
+  _unsubscribe = (topic) => {
+    let sub = this.subscriptions.get(topic);
+    sub.unsubscribe();
+    this.subscriptions.delete(topic);
+  }
+
   _connect = () => {
     this._initStompClient();
     this.client.connect(this.props.headers, () => {
       this.setState({ connected: true });
       this.props.topics.forEach((topic) => {
-        this.subscribe(topic);
+        this._subscribe(topic);
       });
       this.props.onConnect();
     }, (error) => {
@@ -128,6 +155,7 @@ class SockJsClient extends React.Component {
     });
   }
 
+  // Public APIs
   connect = () => {
     this.setState({ explicitDisconnect: false });
     if (! this.state.connected) {
@@ -145,7 +173,7 @@ class SockJsClient extends React.Component {
     this.setState({ explicitDisconnect: true });
     if (this.state.connected) {
       this.subscriptions.forEach((subid, topic) => {
-        this.unsubscribe(topic);
+        this._unsubscribe(topic);
       });
       this.client.disconnect(() => {
         this._cleanUp();
@@ -153,29 +181,6 @@ class SockJsClient extends React.Component {
         this._log("Stomp client is successfully disconnected!");
       });
     }
-  }
-
-  subscribe = (topic) => {
-    if (!this.subscriptions.has(topic)) {
-      let sub = this.client.subscribe(topic, (msg) => {
-        this.props.onMessage(this._processMessage(msg.body), topic);
-      }, Lo.slice(this.props.subscribeHeaders));
-      this.subscriptions.set(topic, sub);
-    }
-  }
-
-  _processMessage = (msgBody) => {
-    try {
-      return JSON.parse(msgBody);
-    } catch(e) {
-      return msgBody;
-    }
-  }
-
-  unsubscribe = (topic) => {
-    let sub = this.subscriptions.get(topic);
-    sub.unsubscribe();
-    this.subscriptions.delete(topic);
   }
 
   sendMessage = (topic, msg, opt_headers = {}) => {
