@@ -7,6 +7,7 @@ e2e test requires a real server running with the following requirements:
   ```
   { "msg": "pong" }
   ```
+- Sending a message to `/app/err` returns a STOMP ERROR frame
 
 A springboot server full-filling the above requirement can be run via:
 
