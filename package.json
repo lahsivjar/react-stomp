@@ -16,7 +16,8 @@
     "e2e-test": "npm run lint && mocha --require babel-core/register --require test/bootstrap.js --recursive test/e2e --exit",
     "all-test": "npm run lint && nyc mocha --require babel-core/register --require test/bootstrap.js --recursive test --exit",
     "build": "babel src --out-dir dist",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "docs": "documentation build src/* -f md --github > API.md"
   },
   "repository": {
     "type": "git",
@@ -42,6 +43,7 @@
     "babel-preset-react": "^6.24.1",
     "chai": "^4.1.2",
     "coveralls": "^3.0.2",
+    "documentation": "^8.1.2",
     "enzyme": "^3.6.0",
     "enzyme-adapter-react-16": "^1.5.0",
     "eslint": "^5.5.0",
