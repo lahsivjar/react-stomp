@@ -43,7 +43,9 @@ class SampleComponent extends React.Component {
 
 A working implementation using [Spring Boot](https://projects.spring.io/spring-boot/) and [react-talk](https://github.com/lahsivjar/react-talk) can be found at <https://github.com/lahsivjar/spring-websocket-template/tree/master/with-sockjs>
 
-## [API Docs](API.md)
+## API Docs
+
+Auto generated docs available [here](API.md).
 
 ## Issues
 

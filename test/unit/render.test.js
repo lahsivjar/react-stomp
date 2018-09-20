@@ -57,7 +57,7 @@ describe('<SockJsClient />', () => {
       debug={false} onMessage={(msg) => { console.log(msg) }} getRetryInterval={retryIntervalFunc} />)
 
     setTimeout(() => {
-      expect(retryIntervalFunc.calledTwice).to.be.true
+      expect(retryIntervalFunc.callCount).to.be.above(1)
       mountedComponent.unmount()
       done()
     }, 210)
