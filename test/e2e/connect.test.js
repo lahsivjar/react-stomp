@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-expressions */
 
 import React from 'react'
+import sinon from 'sinon'
 import { mount } from 'enzyme'
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
@@ -66,6 +67,30 @@ describe('<SockJsClient /> -> connect', () => {
         mountedComponent.unmount()
         done()
       }, 100)
+    }
+  })
+
+  it('After ERROR frame received', (done) => {
+    const messageHandler = sinon.spy()
+    const disconnectHandler = sinon.spy()
+    const mountedComponent = mount(<SockJsClient url='http://localhost:8089/handler'
+      topics={['/topic/all']} onMessage={messageHandler}
+      onDisconnect={disconnectHandler} autoReconnect={false} />)
+
+    setTimeout(() => {
+      mountedComponent.instance().sendMessage('/app/err', 'groot erred')
+      validateErred()
+    }, 200)
+
+    const validateErred = () => {
+      setTimeout(() => {
+        expect(mountedComponent.state().connected).to.be.false
+        expect(mountedComponent.instance().subscriptions.size).to.equal(0)
+        expect(disconnectHandler.callCount).to.equal(1)
+        expect(messageHandler.callCount).to.equal(0)
+        mountedComponent.unmount()
+        done()
+      }, 200)
     }
   })
 })

@@ -32,7 +32,7 @@
 **Extends React.Component**
 
 -   **See: [STOMP][24]**
--   **See: [StompJS:][25]**
+-   **See: [StompJS][25]**
 
 React component for SockJS-client with STOMP messaging protocol.
 
@@ -210,52 +210,52 @@ Number of milliseconds to send heartbeat messages
 
 [22]: #heartbeatoutgoing
 
-[23]: https://github.com/lahsivjar/react-stomp/blob/e38bebc6904a7e8bffc8f346022350c317ee666b/src/client.jsx#L15-L271 "Source code on GitHub"
+[23]: https://github.com/lahsivjar/react-stomp/blob/9b641860d1382bfde5317d5891e83afebdb0ca39/src/client.jsx#L15-L271 "Source code on GitHub"
 
 [24]: https://stomp.github.io/
 
 [25]: https://github.com/sockjs/sockjs-client
 
-[26]: https://github.com/lahsivjar/react-stomp/blob/e38bebc6904a7e8bffc8f346022350c317ee666b/src/client.jsx#L224-L229 "Source code on GitHub"
+[26]: https://github.com/lahsivjar/react-stomp/blob/9b641860d1382bfde5317d5891e83afebdb0ca39/src/client.jsx#L224-L229 "Source code on GitHub"
 
 [27]: #sockjsclientdisconnect
 
-[28]: https://github.com/lahsivjar/react-stomp/blob/e38bebc6904a7e8bffc8f346022350c317ee666b/src/client.jsx#L236-L254 "Source code on GitHub"
+[28]: https://github.com/lahsivjar/react-stomp/blob/9b641860d1382bfde5317d5891e83afebdb0ca39/src/client.jsx#L236-L254 "Source code on GitHub"
 
-[29]: https://github.com/lahsivjar/react-stomp/blob/e38bebc6904a7e8bffc8f346022350c317ee666b/src/client.jsx#L264-L270 "Source code on GitHub"
+[29]: https://github.com/lahsivjar/react-stomp/blob/9b641860d1382bfde5317d5891e83afebdb0ca39/src/client.jsx#L264-L270 "Source code on GitHub"
 
 [30]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
 [31]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[32]: https://github.com/lahsivjar/react-stomp/blob/e38bebc6904a7e8bffc8f346022350c317ee666b/src/client.jsx#L32-L32 "Source code on GitHub"
+[32]: https://github.com/lahsivjar/react-stomp/blob/9b641860d1382bfde5317d5891e83afebdb0ca39/src/client.jsx#L32-L32 "Source code on GitHub"
 
-[33]: https://github.com/lahsivjar/react-stomp/blob/e38bebc6904a7e8bffc8f346022350c317ee666b/src/client.jsx#L38-L38 "Source code on GitHub"
+[33]: https://github.com/lahsivjar/react-stomp/blob/9b641860d1382bfde5317d5891e83afebdb0ca39/src/client.jsx#L38-L38 "Source code on GitHub"
 
 [34]: https://github.com/sockjs/sockjs-client#sockjs-client-api
 
-[35]: https://github.com/lahsivjar/react-stomp/blob/e38bebc6904a7e8bffc8f346022350c317ee666b/src/client.jsx#L42-L42 "Source code on GitHub"
+[35]: https://github.com/lahsivjar/react-stomp/blob/9b641860d1382bfde5317d5891e83afebdb0ca39/src/client.jsx#L42-L42 "Source code on GitHub"
 
-[36]: https://github.com/lahsivjar/react-stomp/blob/e38bebc6904a7e8bffc8f346022350c317ee666b/src/client.jsx#L46-L46 "Source code on GitHub"
+[36]: https://github.com/lahsivjar/react-stomp/blob/9b641860d1382bfde5317d5891e83afebdb0ca39/src/client.jsx#L46-L46 "Source code on GitHub"
 
-[37]: https://github.com/lahsivjar/react-stomp/blob/e38bebc6904a7e8bffc8f346022350c317ee666b/src/client.jsx#L50-L50 "Source code on GitHub"
+[37]: https://github.com/lahsivjar/react-stomp/blob/9b641860d1382bfde5317d5891e83afebdb0ca39/src/client.jsx#L50-L50 "Source code on GitHub"
 
-[38]: https://github.com/lahsivjar/react-stomp/blob/e38bebc6904a7e8bffc8f346022350c317ee666b/src/client.jsx#L56-L56 "Source code on GitHub"
+[38]: https://github.com/lahsivjar/react-stomp/blob/9b641860d1382bfde5317d5891e83afebdb0ca39/src/client.jsx#L56-L56 "Source code on GitHub"
 
 [39]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
-[40]: https://github.com/lahsivjar/react-stomp/blob/e38bebc6904a7e8bffc8f346022350c317ee666b/src/client.jsx#L63-L63 "Source code on GitHub"
+[40]: https://github.com/lahsivjar/react-stomp/blob/9b641860d1382bfde5317d5891e83afebdb0ca39/src/client.jsx#L63-L63 "Source code on GitHub"
 
-[41]: https://github.com/lahsivjar/react-stomp/blob/e38bebc6904a7e8bffc8f346022350c317ee666b/src/client.jsx#L67-L67 "Source code on GitHub"
+[41]: https://github.com/lahsivjar/react-stomp/blob/9b641860d1382bfde5317d5891e83afebdb0ca39/src/client.jsx#L67-L67 "Source code on GitHub"
 
-[42]: https://github.com/lahsivjar/react-stomp/blob/e38bebc6904a7e8bffc8f346022350c317ee666b/src/client.jsx#L71-L71 "Source code on GitHub"
+[42]: https://github.com/lahsivjar/react-stomp/blob/9b641860d1382bfde5317d5891e83afebdb0ca39/src/client.jsx#L71-L71 "Source code on GitHub"
 
-[43]: https://github.com/lahsivjar/react-stomp/blob/e38bebc6904a7e8bffc8f346022350c317ee666b/src/client.jsx#L75-L75 "Source code on GitHub"
+[43]: https://github.com/lahsivjar/react-stomp/blob/9b641860d1382bfde5317d5891e83afebdb0ca39/src/client.jsx#L75-L75 "Source code on GitHub"
 
-[44]: https://github.com/lahsivjar/react-stomp/blob/e38bebc6904a7e8bffc8f346022350c317ee666b/src/client.jsx#L79-L79 "Source code on GitHub"
+[44]: https://github.com/lahsivjar/react-stomp/blob/9b641860d1382bfde5317d5891e83afebdb0ca39/src/client.jsx#L79-L79 "Source code on GitHub"
 
-[45]: https://github.com/lahsivjar/react-stomp/blob/e38bebc6904a7e8bffc8f346022350c317ee666b/src/client.jsx#L83-L83 "Source code on GitHub"
+[45]: https://github.com/lahsivjar/react-stomp/blob/9b641860d1382bfde5317d5891e83afebdb0ca39/src/client.jsx#L83-L83 "Source code on GitHub"
 
-[46]: https://github.com/lahsivjar/react-stomp/blob/e38bebc6904a7e8bffc8f346022350c317ee666b/src/client.jsx#L87-L87 "Source code on GitHub"
+[46]: https://github.com/lahsivjar/react-stomp/blob/9b641860d1382bfde5317d5891e83afebdb0ca39/src/client.jsx#L87-L87 "Source code on GitHub"
 
-[47]: https://github.com/lahsivjar/react-stomp/blob/e38bebc6904a7e8bffc8f346022350c317ee666b/src/client.jsx#L91-L91 "Source code on GitHub"
+[47]: https://github.com/lahsivjar/react-stomp/blob/9b641860d1382bfde5317d5891e83afebdb0ca39/src/client.jsx#L91-L91 "Source code on GitHub"

@@ -10,7 +10,7 @@ import Lo from 'lodash'
  * @version 4.0.0
  * @author [lahsivjar] (https://github.com/lahsivjar)
  * @see {@link https://stomp.github.io/|STOMP}
- * @see {@link https://github.com/sockjs/sockjs-client|StompJS:}
+ * @see {@link https://github.com/sockjs/sockjs-client|StompJS}
  */
 class SockJsClient extends React.Component {
   static defaultProps = {
