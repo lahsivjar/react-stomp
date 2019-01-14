@@ -171,7 +171,7 @@ class SockJsClient extends React.Component {
   _subscribe = (topic) => {
     if (!this.subscriptions.has(topic)) {
       let sub = this.client.subscribe(topic, (msg) => {
-        this.props.onMessage(this._processMessage(msg.body), topic)
+        this.props.onMessage(this._processMessage(msg.body), msg.headers.destination)
       }, Lo.slice(this.props.subscribeHeaders))
       this.subscriptions.set(topic, sub)
     }
