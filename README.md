@@ -53,6 +53,12 @@ Report any issues or bugs to <https://github.com/lahsivjar/react-stomp/issues>
 
 ## Changelog
 
+### 4.1.0
+
+- Update react from 16.5.0 to 16.6.3
+- Update react-dom from 16.5.0 to 16.6.3
+- [PR #93] Use STOMP message frame to find correct topic
+
 ### 4.0.0
 
 -   Improve test coverage
