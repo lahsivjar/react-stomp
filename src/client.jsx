@@ -19,7 +19,7 @@ class SockJsClient extends React.Component {
     getRetryInterval: (count) => { return 1000 * count },
     options: {},
     headers: {},
-    subscribeHeaders: {},
+    subscribeHeaders: [],
     autoReconnect: true,
     debug: false,
     heartbeat: 10000
@@ -68,7 +68,7 @@ class SockJsClient extends React.Component {
     /**
      * Headers that will be passed when subscribing to a destination.
      */
-    subscribeHeaders: PropTypes.object,
+    subscribeHeaders: PropTypes.array,
     /**
      * Should the client try to automatically connect in an event of disconnection.
      */
