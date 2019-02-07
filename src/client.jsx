@@ -68,7 +68,7 @@ class SockJsClient extends React.Component {
     /**
      * Headers that will be passed when subscribing to a destination.
      */
-    subscribeHeaders: PropTypes.array,
+    subscribeHeaders: PropTypes.object,
     /**
      * Should the client try to automatically connect in an event of disconnection.
      */
@@ -172,7 +172,7 @@ class SockJsClient extends React.Component {
     if (!this.subscriptions.has(topic)) {
       let sub = this.client.subscribe(topic, (msg) => {
         this.props.onMessage(this._processMessage(msg.body), msg.headers.destination)
-      }, Lo.slice(this.props.subscribeHeaders))
+      }, this.props.subscribeHeaders)
       this.subscriptions.set(topic, sub)
     }
   }
