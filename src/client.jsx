@@ -19,7 +19,7 @@ class SockJsClient extends React.Component {
     getRetryInterval: (count) => { return 1000 * count },
     options: {},
     headers: {},
-    subscribeHeaders: [],
+    subscribeHeaders: {},
     autoReconnect: true,
     debug: false,
     heartbeat: 10000
