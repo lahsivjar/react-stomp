@@ -7,7 +7,7 @@ import Lo from 'lodash'
 /**
  * React component for SockJS-client with STOMP messaging protocol.
  *
- * @version 4.0.0
+ * @version 4.1.0
  * @author [lahsivjar] (https://github.com/lahsivjar)
  * @see {@link https://stomp.github.io/|STOMP}
  * @see {@link https://github.com/sockjs/sockjs-client|StompJS}
@@ -172,7 +172,7 @@ class SockJsClient extends React.Component {
     if (!this.subscriptions.has(topic)) {
       let sub = this.client.subscribe(topic, (msg) => {
         this.props.onMessage(this._processMessage(msg.body), msg.headers.destination)
-      }, Lo.slice(this.props.subscribeHeaders))
+      }, this.props.subscribeHeaders)
       this.subscriptions.set(topic, sub)
     }
   }
