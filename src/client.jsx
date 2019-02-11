@@ -192,6 +192,15 @@ class SockJsClient extends React.Component {
   }
 
   _connect = () => {
+    if (this._timeoutId) {
+      clearTimeout(this._timeoutId)
+      this._timeoutId = null
+    }
+
+    if (this.state.connected) {
+      return
+    }
+
     this._initStompClient()
     this.client.connect(this.props.headers, () => {
       this.setState({ connected: true })
