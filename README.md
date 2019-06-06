@@ -53,6 +53,10 @@ Report any issues or bugs to <https://github.com/lahsivjar/react-stomp/issues>
 
 ## Changelog
 
+### 4.1.1
+
+- [BugFix #96] Remove array slice of subscribe headers
+
 ### 4.1.0
 
 - Update react from 16.5.0 to 16.6.3
