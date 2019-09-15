@@ -88,7 +88,11 @@ class SockJsClient extends React.Component {
     /**
      * Number of milliseconds to send heartbeat messages
      */
-    heartbeatOutgoing: PropTypes.number
+    heartbeatOutgoing: PropTypes.number,
+    /**
+     * Callback if connection could not be established
+     */
+    onConnectFailure: PropTypes.func,
   }
 
   constructor (props) {
@@ -201,7 +205,11 @@ class SockJsClient extends React.Component {
       this.props.onConnect()
     }, (error) => {
       if (error) {
-        this._log(error.stack)
+        if (Object.keys(this.props).includes('onConnectFailure')) {
+          this.props.onConnectFailure(error)
+        } else {
+          this._log(error.stack)
+        }
       }
       if (this.state.connected) {
         this._cleanUp()
