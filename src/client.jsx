@@ -92,7 +92,7 @@ class SockJsClient extends React.Component {
     /**
      * Callback if connection could not be established
      */
-    onConnectFailure: PropTypes.func,
+    onConnectFailure: PropTypes.func
   }
 
   constructor (props) {
