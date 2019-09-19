@@ -1,6 +1,6 @@
 ## SockJsClient
 
-[src/client.jsx:15-271][23]
+[src/client.jsx:15-279][23]
 
 **Extends React.Component**
 
@@ -12,7 +12,7 @@
 
 ### connect
 
-[src/client.jsx:224-229][26]
+[src/client.jsx:232-237][26]
 
 Connect to the server if not connected. Under normal circumstances component
 will automatically try to connect to server. This method is mostly useful
@@ -20,13 +20,13 @@ after component is explicitly disconnected via [SockJsClient#disconnect][27].
 
 ### disconnect
 
-[src/client.jsx:236-254][28]
+[src/client.jsx:244-262][28]
 
 Disconnect STOMP client and disable all reconnect.
 
 ### sendMessage
 
-[src/client.jsx:264-270][29]
+[src/client.jsx:272-279][29]
 
 Send message to the specified topic.
 
@@ -133,6 +133,16 @@ Number of milliseconds to expect heartbeat messages
 
 Number of milliseconds to send heartbeat messages
 
+### onConnectFailure
+
+[src/client.jsx:95-95][48]
+
+Callback when connection could not be established
+
+#### Parameters
+
+-   `error` **([Object][31])** error throwed by the SockJs Client
+
 [23]: https://github.com/lahsivjar/react-stomp/blob/b31bf86947f5a1cf094f8839b9efcc30cc4d0c36/src/client.jsx#L15-L271 "Source code on GitHub"
 
 [24]: https://stomp.github.io/
@@ -182,3 +192,5 @@ Number of milliseconds to send heartbeat messages
 [46]: https://github.com/lahsivjar/react-stomp/blob/b31bf86947f5a1cf094f8839b9efcc30cc4d0c36/src/client.jsx#L87-L87 "Source code on GitHub"
 
 [47]: https://github.com/lahsivjar/react-stomp/blob/b31bf86947f5a1cf094f8839b9efcc30cc4d0c36/src/client.jsx#L91-L91 "Source code on GitHub"
+
+[48]: https://github.com/lahsivjar/react-stomp/blob/b31bf86947f5a1cf094f8839b9efcc30cc4d0c36/src/client.jsx#L95-L95 "Source code on GitHub"
