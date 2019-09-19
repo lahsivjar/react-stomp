@@ -53,6 +53,11 @@ Report any issues or bugs to <https://github.com/lahsivjar/react-stomp/issues>
 
 ## Changelog
 
+### 4.2.0
+
+- Add `onConnectFailure` callback
+- Upgrade babel to babel7
+
 ### 4.1.1
 
 - [BugFix #96] Remove array slice of subscribe headers
