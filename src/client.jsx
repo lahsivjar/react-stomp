@@ -120,7 +120,7 @@ class SockJsClient extends React.Component {
     return false
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentDidUpdate (nextProps) {
     if (this.state.connected) {
       // Subscribe to new topics
       Lo.difference(nextProps.topics, this.props.topics)
