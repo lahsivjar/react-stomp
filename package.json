@@ -64,7 +64,7 @@
     "prop-types": "^15.6.2",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
-    "sinon": "^7.2.4"
+    "sinon": "^8.0.0"
   },
   "dependencies": {
     "net": "^1.0.2",
