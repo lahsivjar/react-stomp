@@ -53,6 +53,9 @@ Report any issues or bugs to <https://github.com/lahsivjar/react-stomp/issues>
 
 ## Changelog
 
+### 4.3.0
+- Update handlebar dependency
+
 ### 4.2.0
 
 - Add `onConnectFailure` callback
