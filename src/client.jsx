@@ -2,7 +2,7 @@ import React from 'react'
 import SockJS from 'sockjs-client'
 import Stomp from 'stompjs'
 import PropTypes from 'prop-types'
-import Lo from 'lodash'
+import difference from 'lodash/difference'
 
 /**
  * React component for SockJS-client with STOMP messaging protocol.
@@ -123,14 +123,14 @@ class SockJsClient extends React.Component {
   componentWillReceiveProps (nextProps) {
     if (this.state.connected) {
       // Subscribe to new topics
-      Lo.difference(nextProps.topics, this.props.topics)
+      difference(nextProps.topics, this.props.topics)
         .forEach((newTopic) => {
           this._log('Subscribing to topic: ' + newTopic)
           this._subscribe(newTopic)
         })
 
       // Unsubscribe from old topics
-      Lo.difference(this.props.topics, nextProps.topics)
+      difference(this.props.topics, nextProps.topics)
         .forEach((oldTopic) => {
           this._log('Unsubscribing from topic: ' + oldTopic)
           this._unsubscribe(oldTopic)

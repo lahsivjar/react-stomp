@@ -1,6 +1,6 @@
 # react-stomp
 
-[![Build Status](https://travis-ci.org/lahsivjar/react-stomp.svg?branch=master)](https://travis-ci.org/lahsivjar/react-stomp) [![Coverage Status](https://coveralls.io/repos/github/lahsivjar/react-stomp/badge.svg?branch=master)](https://coveralls.io/github/lahsivjar/react-stomp?branch=master) [![License](https://img.shields.io/npm/l/react-stomp.svg)](https://github.com/lahsivjar/react-stomp/blob/master/LICENSE) [![Greenkeeper badge](https://badges.greenkeeper.io/lahsivjar/react-stomp.svg)](https://greenkeeper.io/) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](https://github.com/standard/standard)
+[![Build Status](https://travis-ci.com/lahsivjar/react-stomp.svg?branch=master)](https://travis-ci.com/lahsivjar/react-stomp?branch=master) [![Coverage Status](https://coveralls.io/repos/github/lahsivjar/react-stomp/badge.svg?branch=master)](https://coveralls.io/github/lahsivjar/react-stomp?branch=master) [![License](https://img.shields.io/npm/l/react-stomp.svg)](https://github.com/lahsivjar/react-stomp/blob/master/LICENSE) [![Greenkeeper badge](https://badges.greenkeeper.io/lahsivjar/react-stomp.svg)](https://greenkeeper.io/) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](https://github.com/standard/standard)
 
 React component for [SockJS-client](https://github.com/sockjs/sockjs-client) with [STOMP](https://stomp.github.io/) messaging protocol.
 
@@ -52,6 +52,14 @@ Auto generated docs available [here](API.md).
 Report any issues or bugs to <https://github.com/lahsivjar/react-stomp/issues>
 
 ## Changelog
+
+### 4.3.0
+- Update handlebar dependency
+
+### 4.2.0
+
+- Add `onConnectFailure` callback
+- Upgrade babel to babel7
 
 ### 4.1.1
 
