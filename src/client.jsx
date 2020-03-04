@@ -7,7 +7,7 @@ import difference from 'lodash/difference'
 /**
  * React component for SockJS-client with STOMP messaging protocol.
  *
- * @version 4.1.0
+ * @version 5.0.0
  * @author [lahsivjar] (https://github.com/lahsivjar)
  * @see {@link https://stomp.github.io/|STOMP}
  * @see {@link https://github.com/sockjs/sockjs-client|StompJS}
@@ -120,7 +120,9 @@ class SockJsClient extends React.Component {
     return false
   }
 
-  componentWillReceiveProps (nextProps) {
+  /* eslint camelcase: ["error", {allow: ["UNSAFE_componentWillReceiveProps"]}] */
+
+  UNSAFE_componentWillReceiveProps (nextProps) {
     if (this.state.connected) {
       // Subscribe to new topics
       difference(nextProps.topics, this.props.topics)
@@ -269,9 +271,9 @@ class SockJsClient extends React.Component {
    * @param {Object} [opt_headers={}] additional headers for underlying STOMP client
    * @public
    */
-  sendMessage = (topic, msg, opt_headers = {}) => {
+  sendMessage = (topic, msg, optHeaders = {}) => {
     if (this.state.connected) {
-      this.client.send(topic, opt_headers, msg)
+      this.client.send(topic, optHeaders, msg)
     } else {
       throw new Error('Send error: SockJsClient is disconnected')
     }
