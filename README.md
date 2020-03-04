@@ -53,6 +53,10 @@ Report any issues or bugs to <https://github.com/lahsivjar/react-stomp/issues>
 
 ## Changelog
 
+### 5.0.0
+- Update react from 16.5.0 to 16.6.3
+- Fix deprecation of `componentWillReceiveProps`
+
 ### 4.3.0
 - Update handlebar dependency
 
