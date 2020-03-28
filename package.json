@@ -1,6 +1,6 @@
 {
   "name": "react-stomp",
-  "version": "4.3.0",
+  "version": "5.0.0",
   "description": "React websocket component with STOMP over SockJS",
   "main": "./dist/client.js",
   "nyc": {
@@ -62,9 +62,9 @@
     "mocha": "^6.0.0",
     "nyc": "^14.0.0",
     "prop-types": "^15.6.2",
-    "react": "^16.8.1",
-    "react-dom": "^16.8.1",
-    "sinon": "^7.2.4"
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "sinon": "^9.0.1"
   },
   "dependencies": {
     "handlebars": "^4.3.0",
