@@ -106,6 +106,7 @@ class SockJsClient extends React.Component {
 
     this.subscriptions = new Map()
     this.retryCount = 0
+    this.subscriptionIdCounter = 0
   }
 
   componentDidMount () {
@@ -124,18 +125,18 @@ class SockJsClient extends React.Component {
 
   UNSAFE_componentWillReceiveProps (nextProps) {
     if (this.state.connected) {
-      // Subscribe to new topics
-      difference(nextProps.topics, this.props.topics)
-        .forEach((newTopic) => {
-          this._log('Subscribing to topic: ' + newTopic)
-          this._subscribe(newTopic)
-        })
-
       // Unsubscribe from old topics
       difference(this.props.topics, nextProps.topics)
         .forEach((oldTopic) => {
           this._log('Unsubscribing from topic: ' + oldTopic)
           this._unsubscribe(oldTopic)
+        })
+
+      // Subscribe to new topics
+      difference(nextProps.topics, this.props.topics)
+        .forEach((newTopic) => {
+          this._log('Subscribing to topic: ' + newTopic)
+          this._subscribe(newTopic)
         })
     }
   }
@@ -166,6 +167,7 @@ class SockJsClient extends React.Component {
     this.setState({ connected: false })
     this.retryCount = 0
     this.subscriptions.clear()
+    this.subscriptionIdCounter = 0
   }
 
   _log = (msg) => {
@@ -176,9 +178,10 @@ class SockJsClient extends React.Component {
 
   _subscribe = (topic) => {
     if (!this.subscriptions.has(topic)) {
+      let subscriptionHeaders = Object.assign(this.props.subscribeHeaders, {id : "sub-" + this.subscriptionIdCounter++});
       let sub = this.client.subscribe(topic, (msg) => {
         this.props.onMessage(this._processMessage(msg.body), msg.headers.destination)
-      }, this.props.subscribeHeaders)
+      }, subscriptionHeaders)
       this.subscriptions.set(topic, sub)
     }
   }
@@ -193,7 +196,7 @@ class SockJsClient extends React.Component {
 
   _unsubscribe = (topic) => {
     let sub = this.subscriptions.get(topic)
-    sub.unsubscribe()
+    sub.unsubscribe(topic)
     this.subscriptions.delete(topic)
   }
 
