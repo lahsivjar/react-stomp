@@ -71,4 +71,16 @@ describe('<SockJsClient /> -> subscribe', () => {
       }, 500)
     }
   })
+
+  it('Subscribe header corruption across topics', (done) => {
+    const subscribeHeaders = {}
+    const mountedComponent = mount(<SockJsClient url='http://localhost:8089/handler'
+      topics={['/topic/all', '/topic/1']} onMessage={(msg) => { console.log(msg) }} subscribeHeaders={subscribeHeaders} />)
+
+    setTimeout(() => {
+      expect(mountedComponent.instance().subscriptions.size).to.equal(2)
+      expect(subscribeHeaders).to.be.empty
+      done()
+    }, 500)
+  })
 })
