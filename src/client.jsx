@@ -196,7 +196,7 @@ class SockJsClient extends React.Component {
 
   _unsubscribe = (topic) => {
     let sub = this.subscriptions.get(topic)
-    sub.unsubscribe(topic)
+    sub.unsubscribe()
     this.subscriptions.delete(topic)
   }
 
