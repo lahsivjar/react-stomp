@@ -53,6 +53,19 @@ Report any issues or bugs to <https://github.com/lahsivjar/react-stomp/issues>
 
 ## Changelog
 
+### 5.1.0
+- Fix subscribeHeaders corruption when subscribing to multiple topics
+- Minor upgrades:
+    - sinon
+    - nyc
+    - acorn
+    - websocket-extensions
+    - handlebars
+    - lodash
+    - sockjs-client
+    - highlightjs
+    - ini
+
 ### 5.0.0
 - Update react from 16.6.3 to 16.13.0
 - Fix deprecation of `componentWillReceiveProps`
