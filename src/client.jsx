@@ -22,7 +22,8 @@ class SockJsClient extends React.Component {
     subscribeHeaders: {},
     autoReconnect: true,
     debug: false,
-    heartbeat: 10000
+    heartbeat: 10000,
+    autoDecode: true
   }
 
   static propTypes = {
@@ -92,7 +93,11 @@ class SockJsClient extends React.Component {
     /**
      * Callback if connection could not be established
      */
-    onConnectFailure: PropTypes.func
+    onConnectFailure: PropTypes.func,
+    /**
+     * Should the client try to automatically decode json in an event of process messages.
+     */
+     autoDecode: PropTypes.bool
   }
 
   constructor (props) {
@@ -186,7 +191,11 @@ class SockJsClient extends React.Component {
 
   _processMessage = (msgBody) => {
     try {
-      return JSON.parse(msgBody)
+      if (this.props.autoDecode) {
+        return JSON.parse(msgBody)
+      } else {
+        return msgBody
+      }
     } catch (e) {
       return msgBody
     }
