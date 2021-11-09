@@ -11,7 +11,9 @@ const clientTypes = {
   onlyRequired: <SockJsClient url='http://thisisfakewsurl/ws' topics={['/topics/all']}
     onMessage={(msg) => { console.log(msg) }} />,
   withDebug: <SockJsClient url='http://thisisfakewsurl/ws' topics={['/topics/all']}
-    debug onMessage={(msg) => { console.log(msg) }} />
+    debug onMessage={(msg) => { console.log(msg) }} />,
+  withAutoDecode: <SockJsClient url='http://thisisfakewsurl/ws' topics={['/topics/all']}
+  autoDecode={false} onMessage={(msg) => { console.log(msg) }} />
 }
 
 describe('<SockJsClient />', () => {
@@ -23,6 +25,12 @@ describe('<SockJsClient />', () => {
 
   it('Renders null with additional debug prop', () => {
     const wrapper = shallow(clientTypes.withDebug)
+    expect(wrapper.getElement()).to.be.null
+    wrapper.unmount()
+  })
+
+  it('Renders null with additional autoDecode prop', () => {
+    const wrapper = shallow(clientTypes.withAutoDecode)
     expect(wrapper.getElement()).to.be.null
     wrapper.unmount()
   })
