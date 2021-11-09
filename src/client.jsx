@@ -97,7 +97,7 @@ class SockJsClient extends React.Component {
     /**
      * Should the client try to automatically decode json in an event of process messages.
      */
-     autoDecode: PropTypes.bool
+    autoDecode: PropTypes.bool
   }
 
   constructor (props) {
