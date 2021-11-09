@@ -13,7 +13,7 @@ const clientTypes = {
   withDebug: <SockJsClient url='http://thisisfakewsurl/ws' topics={['/topics/all']}
     debug onMessage={(msg) => { console.log(msg) }} />,
   withAutoDecode: <SockJsClient url='http://thisisfakewsurl/ws' topics={['/topics/all']}
-  autoDecode={false} onMessage={(msg) => { console.log(msg) }} />
+    autoDecode={false} onMessage={(msg) => { console.log(msg) }} />
 }
 
 describe('<SockJsClient />', () => {
